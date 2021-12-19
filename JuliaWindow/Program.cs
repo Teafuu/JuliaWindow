@@ -133,6 +133,7 @@ namespace JuliaWindow
                     exec.Julia(arr, bitmap.PixelHeight, bitmap.PixelWidth, bitmap.BackBufferStride, juliaCenterX,juliaCenterY,juliaDepth);
                 }
 
+                
                 image.Source = BitmapSource.Create((int)bitmap.PixelWidth, (int)bitmap.PixelHeight, bitmap.DpiX, bitmap.DpiY, PixelFormats.Bgr32, null, arr, bitmap.PixelWidth * 4);
 
                 // Specify the area of the bitmap that changed.

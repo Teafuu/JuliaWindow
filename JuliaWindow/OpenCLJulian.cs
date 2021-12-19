@@ -24,18 +24,13 @@ namespace JuliaWindow
 
             int light = IterCount((column * 2.0 / width) - 1.0, (row * 2.0 / height) - 1.0, juliaCenterX, juliaCenterY, juliaDepth);
 
-            double* R = (double*)light;
-            double* G = (double*)1;
-            double* B = light < juliaDepth ? (double*)1 : (double*)0;
-            HsvToRgb(light, 1.0, light < juliaDepth ? 1.0 : 0.0, R, G, B);
+          
+            int result = HsvToRgb(light, 1.0, light < juliaDepth ? 1.0 : 0.0);
 
             // Compute the pixel's color.
-            int color_data = (int)R << 16; // R
-            color_data |= (int)G << 8;   // G
-            color_data |= (int)B << 0;   // B
 
             // Assign the color data to the pixel.
-            image[i] = color_data;
+            image[i] = result;
         }
 
         int IterCount(double zx, double zy, double cx, double cy, int juliaDepth)
@@ -50,7 +45,7 @@ namespace JuliaWindow
             }
             return result;
         }
-        unsafe void HsvToRgb(double h, double S, double V, double* phh, double* pss, double* pvv)
+        unsafe int HsvToRgb(double h, double S, double V)
         {
             double H = h;
             while (H < 0) { H += 360; };
@@ -136,9 +131,11 @@ namespace JuliaWindow
                         break;
                 }
             }
-            phh = (double*)Clamp((int)(R * 255.0));
-            pss = (double*)Clamp((int)(G * 255.0));
-            pvv = (double*)Clamp((int)(B * 255.0));
+
+            int color_data = Clamp((int)(R * 255.0)) << 16; // R
+            color_data |= Clamp((int)(G * 255.0)) << 8;   // G
+            color_data |= Clamp((int)(B * 255.0)) << 0;   // B
+            return color_data;
         }
 
         /// <summary>
